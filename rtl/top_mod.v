@@ -8,8 +8,6 @@ module top_mod#(
     (// apb_reg interface
     input wire clk,
     input wire resetn,
-    input wire PCLK,
-    input wire PRESETn,
     input wire [ ADDR_WIDTH-1 : 0 ] PADDR,
     input wire PWRITE,
     input wire PENABLE,
