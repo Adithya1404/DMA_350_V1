@@ -245,8 +245,6 @@ module top_mod#(
      dut2 (
     .clk        (clk),
     .resetn     (resetn),
-    .PCLK       (clk),     // single clock
-    .PRESETn    (resetn),
     .PADDR      (PADDR),
     .PWRITE     (PWRITE),
     .PSEL       (PSEL),
