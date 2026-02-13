@@ -49,7 +49,9 @@ module apb_reg #(parameter DATA_WIDTH = 32,
       
       
       apb_slave dut0
-      (.PADDR(PADDR),
+         (.PCLK(clk),
+        .PRESETn(resetn),
+       .PADDR(PADDR),
        .PWRITE(PWRITE),
        .PSEL(PSEL),
        .PENABLE(PENABLE),
