@@ -12,7 +12,7 @@ module apb_slave #( parameter DATA_WIDTH = 32,
      input wire PENABLE,
      input wire [ DATA_WIDTH-1 : 0 ]PWDATA,
      input wire [ STRB_WIDTH-1 : 0 ] PSTRB,
-     output reg [ DATA_WIDTH-1 : 0 ]PRDATA,
+     output wire [ DATA_WIDTH-1 : 0 ]PRDATA,
      output wire PREADY,
      output reg PSLVERR,
      
@@ -37,6 +37,7 @@ module apb_slave #( parameter DATA_WIDTH = 32,
     wire RO_error = (( cfg_addr == 'h1080 | cfg_addr == 'h108C | cfg_addr == 'h1090 ) & PWRITE_q);
     wire address_error = (! (cfg_addr >='h1000 && cfg_addr <='h1090));
     assign PREADY = (current_state == ACCESS_ST)? 1 : 0;
+    assign PRDATA = (current_state == ACCESS_ST && PREADY && PWRITE == 0) ? cfg_rdata : 0;
     
     always@(posedge PCLK or negedge PRESETn)
     begin
@@ -84,7 +85,6 @@ module apb_slave #( parameter DATA_WIDTH = 32,
             cfg_rd_en <= 1'b0;               
             cfg_addr  <= {ADDR_WIDTH{1'b0}}; 
             cfg_wdata <= {DATA_WIDTH{1'b0}}; 
-            PRDATA <= 'd0;
         end
         else begin
             cfg_wr_en <= 1'b0;
@@ -109,9 +109,9 @@ module apb_slave #( parameter DATA_WIDTH = 32,
                         cfg_wdata <= PWDATA_q;
                         cfg_wr_en <= 1'b1;
                     end
-                    else begin
-                        PRDATA    <= cfg_rdata;
-                    end
+                    //else begin
+                     //   PRDATA    <= cfg_rdata;
+                    //end
                 end
                 
                 default:
